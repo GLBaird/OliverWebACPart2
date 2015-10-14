@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Classes</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    "use strict";
+
+    /**
+     * A class for making instances of people
+     * @param {string} surname
+     * @param {string} forename
+     * @constructor
+     */
+    function Person(surname, forename) {
+        if (typeof surname === "string")
+            this.surname = surname;
+        if (typeof forename === "string")
+            this.forename = forename;
+
+        if (typeof arguments[0] === "object" && arguments[0] != null) {
+            this.parseFromJSONObject(arguments[0]);
+        }
+
+        // add to collection
+        Person.allPeople.push(this);
+    }
+
+
+    Object.defineProperty(Person.prototype, "status", {
+        enumerable: false, get: function () {
+            return "NO";
+        }
+    });
+
+    Person.prototype.parseFromJSONObject = function (object) {
+        for (var prop in object) {
+            this[prop] = object[prop];
+        }
+    };
+
+    /**
+     * All people created
+     * Class property
+     * @type {Person[]}
+     */
+    Person.allPeople = [];
+
+    /**
+     * Get total number of instances created
+     * @returns {number}
+     */
+    Person.numberOfPeople = function () {
+        return Person.allPeople.length;
+    };
+
+    Person.prototype.toString = function () {
+        return JSON.stringify({
+            surname: this.surname,
+            forename: this.forename
+        });
+    };
+
+    Person.prototype.toJSOBObject = function () {
+        var jsonData = {};
+        for (var prop in this) {
+            if (typeof this[prop] !== "function"
+                    && typeof this[prop] !== "object"
+                    && typeof this[prop] !== "undefined"
+            ) {
+                jsonData[prop] = this[prop];
+            }
+        }
+        return jsonData;
+    };
+
+    Person.stringify = function (collection) {
+        return JSON.stringify(
+                Person.toJSONCollection(collection)
+        );
+    };
+
+    Person.toJSONCollection = function (collection) {
+        return collection.map(function (value, index, array) {
+            return value.toJSOBObject();
+        })
+    };
+
+    /**
+     * Person surname
+     * @type {string}
+     */
+    Person.prototype.surname = "Person";
+
+    /**
+     * Person forename
+     * @type {string}
+     */
+    Person.prototype.forename = "New";
+
+    /**
+     * Get full name of person: forename surname
+     * @returns {string}
+     */
+    Person.prototype.getFullName = function () {
+        return this.forename + " " + this.surname;
+    };
+
+    // Subclass of Person
+
+    /**
+     * Subclass of Person
+     * @param {string} surname
+     * @param {string} forename
+     * @param {number} superpower
+     * @constructor
+     */
+    function SuperPerson(surname, forename, superpower) {
+        if (typeof superpower === "number")
+            this.superPower = superpower;
+        Person.call(this, surname, forename);
+    }
+
+    SuperPerson.prototype = new Person;
+
+    SuperPerson.Powers = {};
+
+    Object.defineProperties(SuperPerson.Powers, {
+        "flight": {
+            value: 0,
+            writable: false
+        },
+        "bulletProof": {
+            value: 1,
+            writable: false
+        },
+        "eatPies": {
+            value: 2,
+            writable: false
+        },
+        "godzillaFart": {
+            value: 3,
+            writable: false
+        }
+    });
+
+
+    SuperPerson.prototype.superPower = SuperPerson.Powers.flight;
+
+
+    String.prototype.makeShitty = function() {
+        return this + " shitty";
+    }
+
+</script>
+
+</body>
+</html>

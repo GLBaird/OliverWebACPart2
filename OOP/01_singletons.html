@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Singletons and Controllers</title>
+</head>
+<body>
+
+<button id="clickMe">Click Me</button>
+
+<script type="text/javascript">
+
+    (function(window) {
+
+        var app = {
+
+            users: [],
+
+            username: "",
+
+            init: function () {
+                console.log("App Starting...");
+
+                this.username = "Leon";
+
+                this.ui.setupUI();
+            },
+
+            ui: {
+
+                /** @type {HTMLElement[]} */
+                elements: [],
+
+                buttonElement: null,
+
+                setupUI: function () {
+                    console.log("Setting up UI");
+
+                    // copy users into elements
+                    this.elements = app.users;
+
+                    this.buttonElement = document.getElementById("clickMe");
+                    this.elements.push(this.buttonElement);
+
+                    this.buttonElement.addEventListener("click", this._handleButtonClick.bind(this, "Bob", "Evil Sid"));
+                },
+
+                /**
+                 * Event handler for a button
+                 * @param {string} nameA
+                 * @param {string} nameB
+                 * @param {MouseEvent} event
+                 * @private
+                 */
+                _handleButtonClick: function (nameA, nameB, event) {
+                    console.log(arguments);
+                    if (event.constructor === MouseEvent) {
+                        console.log(this, event.target, event.currentTarget);
+                    } else {
+                        console.warn("event should be an instance of Event, not ", event);
+                        throw new Error("Fuck Up");
+                    }
+                    console.log("Hi to " + nameA + " and " + nameB);
+                }
+
+            }
+
+        };
+
+        app.init();
+
+        var someCrap = "Rubbish";
+        console.log(someCrap);
+
+        window.app = app;
+
+    })(window);
+
+
+
+</script>
+</body>
+</html>
