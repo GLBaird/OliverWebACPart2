@@ -1,0 +1,33 @@
+body {
+    font-family: HelveticaNeue-Light, Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+    color: #444;
+    background: #EFEFEF;
+    margin: 0;
+    font-size: large;
+}
+
+header {
+    background: #444;
+    padding: 0.5em 10%;
+    color: white;
+}
+
+header h1 {
+    font-size: 1.4em;
+    margin: 0;
+    font-weight: normal;
+}
+
+main {
+    margin: 1em 10%;
+}
+
+nav {
+    margin: 1em 10%;
+}
+
+nav a {
+    color: #444;
+    margin-right: 0.5em;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "angular_git",
+  "version": "0.0.0",
+  "homepage": "https://github.com/GLBaird/OliverWebACPart2",
+  "authors": [
+    "Leon Baird <bairdleon@mac.com>"
+  ],
+  "description": "Simple Angular Demo",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-route": "~1.4.7"
+  }
+}
