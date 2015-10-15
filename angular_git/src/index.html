@@ -17,33 +17,8 @@
         <h1>Angular Git</h1>
     </header>
 
-    <nav>
-        <a href="#">Information</a>
-        <a href="#">Repositories</a>
-    </nav>
-
-    <main ng-controller="InfoController">
-        <p>Enter the username of a GitHub Account:</p>
-        <form ng-submit="getInfoFromGithub(accountName)">
-            <p>
-                <input ng-model="accountName" type="text" placeholder="Enter the account name">
-                <input type="submit" value="Load">
-            </p>
-        </form>
-
-        <hr>
-
-        <p class="error" ng-show="error">{{error}}</p>
-
-        <div ng-show="data">
-            <img ng-src="{{data.avatar_url}}" title="{{data.name}}" alt="Avatar" class="avatar">
-            <div class="gitdata">
-                <p><b>Account name:</b> {{data.login}}</p>
-                <p><b>User name:</b> {{data.name}}</p>
-                <p><b>Email:</b> {{data.email}}</p>
-                <p><b>Company:</b> {{data.company}}</p>
-            </div>
-        </div>
+    <main>
+        <div ng-view></div>
     </main>
 
     <script src="js/app.js"></script>

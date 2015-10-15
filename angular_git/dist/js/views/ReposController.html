@@ -1,0 +1,30 @@
+<nav>
+    <a ng-href="#/info/{{username}}">Information</a>
+    <a ng-href="#/repos/{{username}}">Repositories</a>
+</nav>
+
+<hr>
+
+<p class="error" ng-show="error">{{error}}</p>
+
+<label>
+    Search:
+    <input type="text" placeholder="Repos Name" ng-model="search.name">
+</label>
+
+<label>
+    Order by:
+    <select ng-model="order">
+        <option value="-created_at">Creation Date</option>
+        <option value="-stargazers_count">Star rating</option>
+    </select>
+</label>
+
+<ul>
+    <li ng-repeat="repo in repos | orderBy:order | filter:search">
+        <b>Name:</b> {{repo.name}}<br>
+        <b>Created Date:</b> {{repo.created_at}} <br>
+        <b>Star rating</b> {{repo.stargazers_count | number}} <br>
+        <b>Laguage:</b> {{repo.language}}
+    </li>
+</ul>

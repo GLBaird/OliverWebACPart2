@@ -1,26 +1,31 @@
 // declare app dependencies
-var app = angular.module("AngularGit", []);
+angular
+    .module("AngularGit", ["ngRoute"])
+    .config(["$routeProvider", function($routeProvider) {
 
-app.controller("InfoController", ["$scope", "$http", function($scope, $http){
-    console.log("HI from the main controller");
-
-    $scope.getInfoFromGithub = function(username) {
-        if (typeof username === "string" && username != "") {
-            $scope.error = undefined;
-            $http({
-                method: "GET",
-                url: "https://api.github.com/users/"+username
-            }).then(function(response){
-                // success
-                $scope.data = response.data;
-                $scope.error = undefined;
-            }, function(response){
-                // error!
-                $scope.error = "Network Error "+response.status+" "+response.statusText;
-                $scope.data = undefined;
+        // declare application routes
+        $routeProvider
+            .when("/info", {
+                templateUrl: "js/views/InfoController.html",
+                controller: "InfoController"
+            })
+            .when("/info/:username", {
+                templateUrl: "js/views/InfoController.html",
+                controller: "InfoController"
+            })
+            .when("/repos/:username", {
+                templateUrl: "js/views/ReposController.html",
+                controller: "ReposController"
+            })
+            .otherwise({
+                redirectTo: "/info"
             });
-        } else {
-            $scope.error = "You need to enter a valid github user name!";
-        }
-    }
-}]);
+
+    }]);
+
+// load services
+require("./services/GithubData");
+
+// load controllers
+require("./controllers/InfoController");
+require("./controllers/ReposController");
