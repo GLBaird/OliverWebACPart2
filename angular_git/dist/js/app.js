@@ -28,70 +28,97 @@ angular
 require("./services/GithubData");
 
 // load controllers
+require("./controllers/TabSearchController");
 require("./controllers/InfoController");
 require("./controllers/ReposController");
 
-},{"./controllers/InfoController":2,"./controllers/ReposController":3,"./services/GithubData":4}],2:[function(require,module,exports){
+},{"./controllers/InfoController":2,"./controllers/ReposController":3,"./controllers/TabSearchController":4,"./services/GithubData":5}],2:[function(require,module,exports){
 angular
     .module("AngularGit")
-    .controller("InfoController", ["$scope", "GithubData", "$routeParams", "$location",
-        function($scope, GithubData, $routeParams, $location){
+    .controller("InfoController", ["$scope", "$rootScope", "GithubData", "$routeParams", "$location",
+        function($scope, $rootScope, GithubData, $routeParams, $location){
             console.log("HI from the main controller");
 
-            var getInfoFromGithub = function(username) {
-                if (typeof username === "string" && username != "") {
-                    $scope.username = username;
-                    $location.path("/info/"+username);
+            var getInfoFromGithub = function(event, username) {
+                $location.path("/info/"+username);
 
-                    $scope.error = undefined;
-
-                    // use our service
-                    GithubData.getRepoData(username)
-                        .then(function(data){
-                            // success
-                            $scope.data = data;
-                            $scope.error = undefined;
-                        }, function(msg){
-                            // error!
-                            $scope.error = msg;
-                            $scope.data = undefined;
-                        });
-
-                } else {
-                    $scope.error = "You need to enter a valid github user name!";
-                }
+                // use our service
+                GithubData.getRepoData(username)
+                    .then(function(data){
+                        // success
+                        $scope.data = data;
+                        $rootScope.error = undefined;
+                    }, function(msg){
+                        // error!
+                        $rootScope.error = msg;
+                        $scope.data = undefined;
+                    });
             };
 
+            // Pass details to rootscope for TabSearchController
             if (typeof $routeParams.username !== "undefined") {
-                $scope.accountName = $routeParams.username;
-                getInfoFromGithub($routeParams.username);
+                $rootScope.username = $routeParams.username;
+                $rootScope.accountName = $routeParams.username;
+                getInfoFromGithub(null, $routeParams.username);
             }
 
-            $scope.getInfoFromGithub = getInfoFromGithub;
+            // listen for event from TabSearchController
+            $scope.$on("getdata", getInfoFromGithub);
 
          }]
     );
 },{}],3:[function(require,module,exports){
 angular
     .module("AngularGit")
-    .controller("ReposController", ["$scope", "$routeParams", "GithubData",
-        function($scope, $routeParams, GithubData){
+    .controller("ReposController", ["$scope", "$rootScope", "$routeParams", "GithubData", "$location",
+        function($scope, $rootScope, $routeParams, GithubData, $location){
 
-            $scope.username = $routeParams.username;
+            function updateReposList(username) {
+                GithubData.getRepoData(username)
+                    .then(function(data){
+                        // success
+                        $rootScope.error = undefined;
+                        $scope.repos = data.repos;
 
-            GithubData.getRepoData($routeParams.username)
-                .then(function(data){
-                    // success
-                    $scope.error = undefined;
-                    $scope.repos = data.repos;
+                    }, function(msg){
+                        // error
+                        $rootScope.error = msg;
+                    });
+            }
 
-                }, function(msg){
-                    // error
-                    $scope.error = msg;
-                });
+            // get event from TabSearchController
+            $scope.$on("getdata", function(event, username) {
+                $location.path("/repos/"+username);
+                updateReposList(username);
+            });
+
+            // do initial load of data
+            updateReposList($routeParams.username);
+
+            // Pass details to rootscope for TabSearchController
+            if (typeof $routeParams.username !== "undefined") {
+                $rootScope.username = $routeParams.username;
+                $rootScope.accountName = $routeParams.username;
+            }
         }]
     );
 },{}],4:[function(require,module,exports){
+angular
+    .module("AngularGit")
+    .controller("TabSearchController", ["$scope", "$rootScope", function($scope, $rootScope) {
+
+        $scope.askInfoControllerToGetData = function (username) {
+            if (typeof username === "string" && username != "") {
+                $rootScope.error = undefined;
+                $rootScope.username = username;
+                $rootScope.$broadcast("getdata", username);
+            } else {
+                $rootScope.error = "You need to enter a valid github user name!";
+            }
+        }
+
+    }]);
+},{}],5:[function(require,module,exports){
 angular
     .module("AngularGit")
     .factory("GithubData", ["$http", "$q", function($http, $q){
@@ -122,13 +149,23 @@ angular
 
                             // load repos list
                             return $http.get("https://api.github.com/users/"+username+"/repos");
-                        }, handleError)
+                        })
                         .then(function(response){
                             // we got the repos list
                             cachedData[username].repos = response.data;
 
+                            // lookup contributors
+                            response.data.forEach(function (repo) {
+                                repo.contributors = [];
+                                $http.get(repo.contributors_url)
+                                    .then(function (response) {
+                                        repo.contributors = response.data;
+                                    });
+                            });
+
                             // fulfil promise
                             resolve(cachedData[username]);
+
                         }, handleError);
 
                 }

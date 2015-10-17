@@ -1,0 +1,47 @@
+Install NodeJS(npm)
+http://nodejs.org
+
+Install Main Apps
+
+sudo npm install -g bower
+sudo npm install -g browserify
+sudo npm install -g gulp
+sudo npm install -g http-server
+
+
+Setup Bower
+
+bower init
+
+bower install --save angular
+bower install --save angular-route
+
+(bower install) install the dependencies
+
+NPM Setup
+
+npm init
+
+npm install --save-dev http-server
+
+(Or copy from sample file)
+npm install --save-dev browserify
+npm install --save-dev del
+npm install --save-dev gulp
+npm install --save-dev gulp-concat
+npm install --save-dev gulp-filesize
+npm install --save-dev gulp-minify-css
+npm install --save-dev gulp-uglify
+npm install --save-dev vinyl-buffer
+npm install --save-dev vinyl-source-stream
+
+(npm install) install the dependencies
+
+setup HTTP-Server in package.json:
+
+"scripts": {
+"start": "echo 'HTTP Server setup on http://localhost:3000' && http-server -p 3000 -c-1"
+}
+
+To launch server:
+npm start

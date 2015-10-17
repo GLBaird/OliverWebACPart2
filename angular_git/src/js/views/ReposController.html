@@ -1,30 +1,32 @@
-<nav>
-    <a ng-href="#/info/{{username}}">Information</a>
-    <a ng-href="#/repos/{{username}}">Repositories</a>
-</nav>
-
-<hr>
-
-<p class="error" ng-show="error">{{error}}</p>
-
+<!-- Search Repos Tools -->
 <label>
     Search:
-    <input type="text" placeholder="Repos Name" ng-model="search.name">
+    <input class="search" type="text" placeholder="Repos Name" ng-model="search.name">
 </label>
 
-<label>
+<label style="display: inline-block">
     Order by:
-    <select ng-model="order">
+    <select class="combo" ng-model="order">
         <option value="-created_at">Creation Date</option>
         <option value="-stargazers_count">Star rating</option>
     </select>
 </label>
+<!-- End of Search Repos Tools -->
 
+<!-- Repos List -->
 <ul>
     <li ng-repeat="repo in repos | orderBy:order | filter:search">
-        <b>Name:</b> {{repo.name}}<br>
-        <b>Created Date:</b> {{repo.created_at}} <br>
-        <b>Star rating</b> {{repo.stargazers_count | number}} <br>
-        <b>Laguage:</b> {{repo.language}}
+        <p style="margin: 0;">
+            <span class="index">{{$index+1}}</span>
+            <b>Name:</b> {{repo.name}}<br>
+            <b>Created:</b> {{repo.created_at}}<br>
+            <b>Star rating:</b> {{repo.stargazers_count | number}}<br>
+            <b>Language:</b> {{repo.language}}<br>
+            <b>Contributors:</b>
+        </p>
+        <p style="margin: 0.5em 0;">
+            <img ng-repeat="contributor in repo.contributors" ng-src="{{contributor.avatar_url}}" title="{{contributor.login}}" alt="Contributor avatar" >
+        </p>
     </li>
 </ul>
+<!-- End of Repos List -->

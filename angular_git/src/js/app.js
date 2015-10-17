@@ -27,5 +27,6 @@ angular
 require("./services/GithubData");
 
 // load controllers
+require("./controllers/TabSearchController");
 require("./controllers/InfoController");
 require("./controllers/ReposController");

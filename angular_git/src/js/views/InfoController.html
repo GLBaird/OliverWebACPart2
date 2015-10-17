@@ -1,20 +1,4 @@
-<nav>
-    <a ng-href="#/info/{{username}}">Information</a>
-    <a ng-href="#/repos/{{username}}" ng-show="username">Repositories</a>
-</nav>
-
-<p>Enter the username of a GitHub Account:</p>
-<form ng-submit="getInfoFromGithub(accountName)">
-    <p>
-        <input ng-model="accountName" type="text" placeholder="Enter the account name">
-        <input type="submit" value="Load">
-    </p>
-</form>
-
-<hr>
-
-<p class="error" ng-show="error">{{error}}</p>
-
+<!-- User Info Data -->
 <div ng-show="data">
     <img ng-src="{{data.avatar_url}}" title="{{data.name}}" alt="Avatar" class="avatar">
     <div class="gitdata">

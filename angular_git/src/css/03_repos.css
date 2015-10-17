@@ -1,0 +1,72 @@
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 1em;
+    padding: 0.2em 1em;
+    border: 1px solid #DDD;
+    outline: none;
+    color: #444;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: white;
+    margin: 1em 3% 1em 0;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 2px 2px #CCC;
+    -moz-box-shadow: 2px 2px 2px #CCC;
+    box-shadow: 2px 2px 2px #CCC;
+    width: 40%;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+
+li b {
+    display: inline-block;
+    width: 5.5em;
+    text-align: right;
+    margin-right: 0.3em;
+}
+
+span.index {
+    position: absolute;
+    color: #999;
+    border: 1px solid #999;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 1.8em;
+    height: 1.8em;
+    text-align: center;
+    padding-top: 0.3em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    right: 0.5em;
+}
+
+li img {
+    display: inline-block;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-shadow: 2px 2px 2px #DDD;
+    -moz-box-shadow: 2px 2px 2px #DDD;
+    box-shadow: 2px 2px 2px #DDD;
+    width: 2em;
+    margin-right: 0.5em;
+}
+
+@media screen and (max-width: 970px) {
+    li {
+        display: block;
+        width: auto;
+    }
+}

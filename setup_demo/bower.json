@@ -1,0 +1,16 @@
+{
+  "name": "setup_demo",
+  "authors": [
+    "Leon Baird <bairdleon@mac.com>"
+  ],
+  "description": "Demo of setting up a project",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-route": "~1.4.7"
+  }
+}

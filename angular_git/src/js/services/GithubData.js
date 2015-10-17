@@ -28,13 +28,23 @@ angular
 
                             // load repos list
                             return $http.get("https://api.github.com/users/"+username+"/repos");
-                        }, handleError)
+                        })
                         .then(function(response){
                             // we got the repos list
                             cachedData[username].repos = response.data;
 
+                            // lookup contributors
+                            response.data.forEach(function (repo) {
+                                repo.contributors = [];
+                                $http.get(repo.contributors_url)
+                                    .then(function (response) {
+                                        repo.contributors = response.data;
+                                    });
+                            });
+
                             // fulfil promise
                             resolve(cachedData[username]);
+
                         }, handleError);
 
                 }

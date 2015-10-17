@@ -11,13 +11,34 @@
     <!-- Load styles from build! -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body ng-controller="TabSearchController">
 
     <header>
         <h1>Angular Git</h1>
     </header>
 
+    <!-- Tabs for navigation of app views -->
+    <nav>
+        <a ng-href="#/info/{{username}}">Information</a>
+        <a ng-href="#/repos/{{username}}" ng-show="username">Repositories</a>
+    </nav>
+
     <main>
+        <!-- Search Form -->
+        <p>Enter the username of a GitHub Account:</p>
+        <form ng-submit="askInfoControllerToGetData(accountName)">
+            <p>
+                <input class="search" ng-model="accountName" type="text" placeholder="Enter the account name">
+                <input type="submit" value="Load">
+            </p>
+        </form>
+
+        <hr>
+
+        <!-- Error display -->
+        <p class="error" ng-show="error">{{error}}</p>
+
+        <!-- Store for views -->
         <div ng-view></div>
     </main>
 

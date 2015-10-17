@@ -1,0 +1,23 @@
+{
+  "name": "setup_demo",
+  "version": "1.0.0",
+  "description": "Demo Setup",
+  "scripts": {
+    "start": "echo 'HTTP Server setup on http://localhost:3000' && http-server -p 3000 -c-1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leon Baird <leonbaird@mac.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-filesize": "0.0.6",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-uglify": "^1.4.1",
+    "http-server": "^0.8.5",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

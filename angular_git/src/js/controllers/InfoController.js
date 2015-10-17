@@ -1,39 +1,34 @@
 angular
     .module("AngularGit")
-    .controller("InfoController", ["$scope", "GithubData", "$routeParams", "$location",
-        function($scope, GithubData, $routeParams, $location){
+    .controller("InfoController", ["$scope", "$rootScope", "GithubData", "$routeParams", "$location",
+        function($scope, $rootScope, GithubData, $routeParams, $location){
             console.log("HI from the main controller");
 
-            var getInfoFromGithub = function(username) {
-                if (typeof username === "string" && username != "") {
-                    $scope.username = username;
-                    $location.path("/info/"+username);
+            var getInfoFromGithub = function(event, username) {
+                $location.path("/info/"+username);
 
-                    $scope.error = undefined;
-
-                    // use our service
-                    GithubData.getRepoData(username)
-                        .then(function(data){
-                            // success
-                            $scope.data = data;
-                            $scope.error = undefined;
-                        }, function(msg){
-                            // error!
-                            $scope.error = msg;
-                            $scope.data = undefined;
-                        });
-
-                } else {
-                    $scope.error = "You need to enter a valid github user name!";
-                }
+                // use our service
+                GithubData.getRepoData(username)
+                    .then(function(data){
+                        // success
+                        $scope.data = data;
+                        $rootScope.error = undefined;
+                    }, function(msg){
+                        // error!
+                        $rootScope.error = msg;
+                        $scope.data = undefined;
+                    });
             };
 
+            // Pass details to rootscope for TabSearchController
             if (typeof $routeParams.username !== "undefined") {
-                $scope.accountName = $routeParams.username;
-                getInfoFromGithub($routeParams.username);
+                $rootScope.username = $routeParams.username;
+                $rootScope.accountName = $routeParams.username;
+                getInfoFromGithub(null, $routeParams.username);
             }
 
-            $scope.getInfoFromGithub = getInfoFromGithub;
+            // listen for event from TabSearchController
+            $scope.$on("getdata", getInfoFromGithub);
 
          }]
     );
